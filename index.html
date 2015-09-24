@@ -65,6 +65,43 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-aa" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/09/24/aa/" class="article-date">
+  <time datetime="2015-09-24T12:23:19.000Z" itemprop="datePublished">2015-09-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/09/24/aa/">aa</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p> 求一个数组中满足一定条件的两个元素的最大差值<br>分类： 算法 2013-08-14 11:18 918人阅读 评论(0) 收藏 举报<br>算法动态规划<br>之前在电面的时候碰到一道题，要求找出一个互异数组中两个元素的最大差值。具体描述如下：<br>有一个整数数组d[0,…,n-1]，并且数组满足不存在相同的元素，要求找出<br>1) max{d[i] - d[j]} 且 i &gt; j;(对应实际生活中的股票买卖，找出可能的最大收益)<br>2) max{d[i] - d[j]} 且 i &lt; j;<br>思路有很多种，用动态规划最简单，时间复杂度都是O(n)，线性时间复杂度。<br>针对1)动规的模型如下：<br>1)设n&gt;i&gt;2,a(i)是以d[i]价格卖出的最大收益，那么最大收益就是d[i]的值减去d[0~i-1]中最小值，即最大收益<br>2)那么a(i+1)则是以d[i+1]价格卖出的最大收益，就是d[i+1]的值减去d[0~i]中最小值，而1)中已经求出了d[0~i-1]的最小值，只要把那个值与d[i]的值比较即可。<br>3)在所有可能的卖出点求出所有最大的收益，即为所求。<br>[cpp] view plaincopy<br>int findMaxDiff1(int n, int<em> d)<br>{<br>    int i = 0;<br>    int min = d[0];<br>    if(n &lt; 2) return 0;<br>    int maxDiff = d[1] - d[0];<br>    for(i = 2; i &lt; n; i++)<br>    {<br>        if(d[i - 1] &lt; min)<br>        {<br>            min = d[i - 1];<br>        }<br>        if(d[i] - min &gt; maxDiff)<br>        {<br>            maxDiff = d[i] - min;<br>        }<br>    }<br>    return maxDiff;<br>}<br>int findMaxDiff2(int n, int</em> d)<br>{<br>    int i = 0;<br>    int max = d[0];<br>    int maxDiff = d[0] - d[1];<br>    if(n &lt; 2) return 0;<br>    for(i = 2; i &lt; n; i++)<br>    {<br>        if(d[i - 1] &gt; max)<br>        {<br>            max = d[i - 1];<br>        }<br>        if(max - d[i] &gt; maxDiff)<br>        {<br>            maxDiff = max - d[i];<br>        }<br>    }<br>    return maxDiff;<br>}   </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2015/09/24/aa/" data-id="ciey6ysjc0000wwak61wqp7ba" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-mm" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2015/09/21/mm/" class="article-date">
@@ -174,7 +211,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2015/09/21/mm/" data-id="cietzjwrs000128ak3rocb5cn" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2015/09/21/mm/" data-id="ciey6ysmo0001wwakd7ebpe3v" class="article-share-link">Share</a>
       
       
     </footer>
@@ -219,7 +256,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2015/09/21/hello-world/" data-id="cietzjwqw000028akv9sf1umm" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2015/09/21/hello-world/" data-id="ciey6ysn80002wwak27itfo7o" class="article-share-link">Share</a>
       
       
     </footer>
@@ -244,7 +281,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a><span class="archive-list-count">2</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a><span class="archive-list-count">3</span></li></ul>
     </div>
   </div>
 
@@ -254,6 +291,10 @@
     <h3 class="widget-title">Recents</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2015/09/24/aa/">aa</a>
+          </li>
         
           <li>
             <a href="/2015/09/21/mm/">mm</a>
