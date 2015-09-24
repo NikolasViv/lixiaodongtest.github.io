@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>findmaxDiff | Down with wind !</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="(动态规划DP)面试题:求数组中两个数的最大差值（只能下标大的减去下标小的）符合无后效性分类： 学习转载 心得体会 郁闷心事 2013-09-18 01:42 1448人阅读 评论(0) 收藏 举报空间复杂度优化算法[cpp] view plaincopyvoid sovle_maxSub_Dp_OptimalSpace(int *a, int n){ int S=0; int max_value">
+<meta property="og:type" content="article">
+<meta property="og:title" content="findmaxDiff">
+<meta property="og:url" content="http://yoursite.com/2015/09/24/findmaxDiff/index.html">
+<meta property="og:site_name" content="Down with wind !">
+<meta property="og:description" content="(动态规划DP)面试题:求数组中两个数的最大差值（只能下标大的减去下标小的）符合无后效性分类： 学习转载 心得体会 郁闷心事 2013-09-18 01:42 1448人阅读 评论(0) 收藏 举报空间复杂度优化算法[cpp] view plaincopyvoid sovle_maxSub_Dp_OptimalSpace(int *a, int n){ int S=0; int max_value">
+<meta property="og:updated_time" content="2015-09-24T12:29:10.811Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="findmaxDiff">
+<meta name="twitter:description" content="(动态规划DP)面试题:求数组中两个数的最大差值（只能下标大的减去下标小的）符合无后效性分类： 学习转载 心得体会 郁闷心事 2013-09-18 01:42 1448人阅读 评论(0) 收藏 举报空间复杂度优化算法[cpp] view plaincopyvoid sovle_maxSub_Dp_OptimalSpace(int *a, int n){ int S=0; int max_value">
+  
+    <link rel="alternative" href="/atom.xml" title="Down with wind !" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  
+
+</head>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Down with wind !</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">--remember my own life</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="dp_problem-findmaxDiff" class="article article-type-dp_problem" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/09/24/findmaxDiff/" class="article-date">
+  <time datetime="2015-09-24T12:28:40.000Z" itemprop="datePublished">2015-09-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      findmaxDiff
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p> (动态规划DP)面试题:求数组中两个数的最大差值（只能下标大的减去下标小的）符合无后效性<br>分类： 学习转载 心得体会 郁闷心事 2013-09-18 01:42 1448人阅读 评论(0) 收藏 举报<br>空间复杂度优化算法<br>[cpp] view plaincopy<br>void sovle_maxSub_Dp_OptimalSpace(int *a, int n){<br> int S=0;<br> int max_value=INT_MIN;<br> int max_index=0;<br> for(int i=n-2;i&gt;=1;i–){<br>  S=S&lt;0?a[i]-a[i+1]:a[i]-a[i+1]+S;<br>  if(max_value&lt;S){<br>   max_value=S;<br>   max_index=i;<br>  }<br> }<br> cout&lt;&lt;”最大差值为：”&lt;&lt;max_value&lt;&lt;”,对应的两个元素为：”&lt;&lt;endl;<br> cout&lt;&lt;”数组中第”&lt;&lt;max_index&lt;&lt;”个元素:”&lt;&lt;a[max_index]&lt;&lt;endl;<br> for(int i=max_index+1;i&lt;=n;i++){<br>  if(a[max_index]-a[i]==max_value){<br>   cout&lt;&lt;”数组中第”&lt;&lt;i&lt;&lt;”个元素:”&lt;&lt;a[i]&lt;&lt;endl;<br>   break;<br>  }<br> }<br>}  </p>
+<p>当时头大，只写了穷举法 O(N2)的复杂度，肯定还有简单的方法呀，只是当时不知怎地就是想不起来紧张的要死告诉面试官暂时另一个办法想不起来了</p>
+<p>回来一看又是编程之美里的题目，其实我在暑假的时候已经看过了那个题目可惜可惜。现在在这里写出来给自己一个经验教训！</p>
+<p>动态规划算法O（N）<br>给定一个整数数组，a[1],a[2],…,a[n]，每一个元素a[i]可以和它右边的（a[i+1],a[i+2],…,a[n]）元素做差，求这个数组中最大的差值，例如a={0,3,9,1,3,5}这个数组最大的差值就是9-1=8;（此为小减大，面试给的是大减小）<br>利用DP的思想，定义S[i]为a[i]与其右边元素之差的最大值，那么状态转移方程为：<br>s[i]=a[i]-a[i+1]      if s[i+1]<0 (表明a[i+1]是从i+1到n所有元素中最小的一个)="" s[i]="s[i+1]+a[i]-a[i+1]" if="" s[i+1]="">=0  </0></p>
+<p>动态规划<br>一，动态规划三要素：阶段，状态，决策。<br>如果把动态规划的求解过程看成一个工厂的生产线，阶段就是生产某个商品的不同的环节，状态就是工件当前的形态，决策就是对工件的操作。显然不同阶段是对产品的一个前面各个状态的小结，有一个个的小结构成了最终的整个生产线。每个状态间又有关联（下一个状态是由上一个状态做了某个决策后产生的）。<br>下面举个例子：<br>要生产一批雪糕，在这个过程中要分好多环节：购买牛奶，对牛奶提纯处理，放入工厂加工，加工后的商品要包装，包装后就去销售……，这样没个环节就可以看做是一个阶段；产品在不同的时候有不同的状态，刚开始时只是白白的牛奶，进入生产后做成了各种造型，从冷冻库拿出来后就变成雪糕（由液态变成固态）。每个形态就是一个状态，那从液态变成固态经过了冰冻这一操作，这个操作就是一个决策。<br>一个状态经过一个决策变成了另外一个状态，这个过程就是状态转移，用来描述状态转移的方程就是状态转移方程。<br>经过这个例子相信大家对动态规划有所了解了吧。<br>下面在说说我对动态规划的另外一个理解：<br>用图论知识理解动态规划：把动态规划中的状态抽象成一个点，在有直接关联的状态间连一条有向边，状态转移的代价就是边上的权。这样就形成了一个有向无环图AOE网（为什么无环呢？往下看）。对这个图进行拓扑排序，删除一个边后同时出现入度为0的状态在同一阶段。这样对图求最优路径就是动态规划问题的求解。<br>二，动态规划的适用范围<br>动态规划用于解决多阶段决策最优化问题，但是不是所有的最优化问题都可以用动态规划解答呢？<br>一般在题目中出现求最优解的问题就要考虑动态规划了，但是否可以用还要满足两个条件：<br>（1）最优子结构（最优化原理）<br>（2）无后效性<br>最优化原理在下面的最短路径问题中有详细的解答；<br>什么是无后效性呢？<br>就是说在状态i求解时用到状态j而状态j就解有用到状态k…..状态N。<br>而求状态N时有用到了状态i这样求解状态的过程形成了环就没法用动态规划解答了，这也是上面用图论理解动态规划中形成的图无环的原因。<br>也就是说当前状态是前面状态的完美总结，现在与过去无关。。。<br>当然，有是换一个划分状态或阶段的方法就满足无后效性了，这样的问题仍然可以用动态规划解。<br>三，动态规划解决问题的一般思路。<br>拿到多阶段决策最优化问题后，第一步要判断这个问题是否可以用动态规划解决，如果不能就要考虑搜索或贪心了。当却定问题可以用动态规划后，就要用下面介绍的方法解决问题了：<br>（1）模型匹配法：<br>         最先考虑的就是这个方法了。挖掘问题的本质，如果发现问题是自己熟悉的某个基本的模型，就直接套用，但要小心其中的一些小的变动，现在考题办都是基本模型的变形套用时要小心条件，三思而后行。这些基本模型在先面的分类中将一一介绍。<br>（2）三要素法<br>仔细分析问题尝试着确定动态规划的三要素，不同问题的却定方向不同：<br>先确定阶段的问题：数塔问题，和走路问题（详见解题报告）<br>先确定状态的问题：大多数都是先确定状态的。<br>先确定决策的问题：背包问题。（详见解题报告）<br>一般都是先从比较明显的地方入手，至于怎么知道哪个明显就是经验问题了，多做题就会发现。<br>（3）寻找规律法：<br>这个方法很简单，耐心推几组数据后，看他们的规律，总结规律间的共性，有点贪心的意思。<br>（4）边界条件法<br>         找到问题的边界条件，然后考虑边界条件与它的领接状态之间的关系。这个方法也很起效。<br>（5）放宽约束和增加约束<br>         这个思想是在陈启锋的论文里看到的，具体内容就是给问题增加一些条件或删除一些条件使问题变的清晰。</p>
+<p>动态规划是解决多决策问题最优化问题的一种良好算法，典型的DP应用就是背包问题，图像压缩问题等，DP可以决解决贪心算法和分而治之问题中一些难以解决的问题</p>
+<p>版权声明：本文为博主原创文章，未经博主允许不得转载。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2015/09/24/findmaxDiff/" data-id="ciey75b0g0003iwaky6n2p8fo" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2015/09/24/aa/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">aa</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  
+    
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a><span class="archive-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2015/09/24/findmaxDiff/">findmaxDiff</a>
+          </li>
+        
+          <li>
+            <a href="/2015/09/24/aa/">aa</a>
+          </li>
+        
+          <li>
+            <a href="/2015/09/21/mm/">mm</a>
+          </li>
+        
+          <li>
+            <a href="/2015/09/21/hello-world/">Hello World</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2015 lixiaodong<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+
+  </div>
+</body>
+</html>
