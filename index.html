@@ -65,6 +65,82 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-hihocoder-1290-Demo-Day" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/04/14/hihocoder-1290-Demo-Day/" class="article-date">
+  <time datetime="2016-04-14T02:33:37.000Z" itemprop="datePublished">2016-04-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/04/14/hihocoder-1290-Demo-Day/">hihocoder_1290_Demo_Day</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>题意:就是机器人能往右走就往右走，不能就往下走。往下走走不动了就再往右走。你能够把障碍物变成平地，也能把平地变成障碍物。问机器人从图的左上走到右下的话，最少需要修改图中的几个格子。<br>思路：DP problem。<br>dp[x][y][0]表示从从格子右边走的代价，dp[x][y][1]表示该格子往下边走的代价。<br>1、dp[1][1][0] = nums[1][1]==’.’?0:1; dp[1][1][1] = nums[1][1][0]+(nums[1][2]==’.’?1:0);(i==1,j==1)<br>2、dp[1][j][0] = dp[1][j-1][0]+(nums[1][j]==’.’?0:1);dp[1][j][1] = INT_MAX; (2&lt;=j&lt;=M)<br>3、dp[i][j][0] = dp[i][1][0]+(nums[i][1]==’.’?0:1);dp[i][1][0]=INT_MAX；(2&lt;=i&lt;=N)<br>output:dp[N][M]</p>
+<p>code:</p>
+<p>#include<vector></vector></p>
+<p>#include<stdio.h></stdio.h></p>
+<p>#include<iostream></iostream></p>
+<p>#include<algorithm></algorithm></p>
+<p>#include<string.h><br>using namespace std;</string.h></p>
+<p>int N,M;<br>char a[100+5][100+5];<br>int dp[100+5][100+5][2];</p>
+<p>/<em><br>dp[i][j][0]表示到达<i,j>位置时，此时方向向右<br>dp[i][j][1]表示到达<i,j>位置时，此时方向向下
+</i,j></i,j></em>/<br>int main()<br>{<br>    while(scanf(“%d%d”,&amp;N,&amp;M)!=EOF)<br>    {<br>    for(int i=1;i&lt;=N;++i)<br>        scanf(“%s”,a[i]+1);<br>    memset(dp,0,sizeof(dp));</p>
+<pre><code>dp[<span class="number">1</span>][<span class="number">1</span>][<span class="number">0</span>] = a[<span class="number">1</span>][<span class="number">1</span>]==<span class="string">'.'</span>?<span class="number">0</span>:<span class="number">1</span>;
+dp[<span class="number">1</span>][<span class="number">1</span>][<span class="number">1</span>] = dp[<span class="number">1</span>][<span class="number">1</span>][<span class="number">0</span>] + ((<span class="number">2</span>&lt;=M)&amp;&amp;(a[<span class="number">1</span>][<span class="number">2</span>]==<span class="string">'.'</span>?<span class="number">1</span>:<span class="number">0</span>));
+
+<span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">2</span>;j&lt;=M;++j)
+{
+    dp[<span class="number">1</span>][j][<span class="number">0</span>] = dp[<span class="number">1</span>][j-<span class="number">1</span>][<span class="number">0</span>]+(a[<span class="number">1</span>][j]==<span class="string">'.'</span>?<span class="number">0</span>:<span class="number">1</span>);
+    dp[<span class="number">1</span>][j][<span class="number">1</span>] = INT_MAX; 
+}
+<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">2</span>;i&lt;=N;++i)
+{
+    dp[i][<span class="number">1</span>][<span class="number">0</span>] = INT_MAX;
+    dp[i][<span class="number">1</span>][<span class="number">1</span>] = dp[i-<span class="number">1</span>][<span class="number">1</span>][<span class="number">1</span>]+(a[i][<span class="number">1</span>]==<span class="string">'.'</span>?<span class="number">0</span>:<span class="number">1</span>);
+}
+
+<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">2</span>;i&lt;=N;++i)<span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">2</span>;j&lt;=M;++j)
+{
+    <span class="comment">//左边过来的</span>
+
+    dp[i][j][<span class="number">0</span>] = min(dp[i][j-<span class="number">1</span>][<span class="number">0</span>],dp[i][j-<span class="number">1</span>][<span class="number">1</span>]+((i+<span class="number">1</span>&lt;=N)&amp;&amp;(a[i+<span class="number">1</span>][j-<span class="number">1</span>]==<span class="string">'b'</span>?<span class="number">0</span>:<span class="number">1</span>)))+(a[i][j]==<span class="string">'b'</span>?<span class="number">1</span>:<span class="number">0</span>);
+    <span class="comment">//上边过来的</span>
+    dp[i][j][<span class="number">1</span>] = min(dp[i-<span class="number">1</span>][j][<span class="number">1</span>],dp[i-<span class="number">1</span>][j][<span class="number">0</span>]+((j+<span class="number">1</span>&lt;=M)&amp;&amp;(a[i-<span class="number">1</span>][j+<span class="number">1</span>]==<span class="string">'b'</span>?<span class="number">0</span>:<span class="number">1</span>)))+(a[i][j]==<span class="string">'b'</span>?<span class="number">1</span>:<span class="number">0</span>);
+}
+
+<span class="keyword">int</span> ans = dp[N][M][<span class="number">0</span>]&lt;dp[N][M][<span class="number">1</span>]?dp[N][M][<span class="number">0</span>]:dp[N][M][<span class="number">1</span>];
+<span class="built_in">cout</span>&lt;&lt;ans&lt;&lt;endl;
+}
+
+<span class="keyword">return</span> <span class="number">0</span>;
+</code></pre><p>}</p>
+<p>注意：<br> 1、输入输出问题：对于char a[M][N],进行每行，从下标1开始输入scanf(“%s”,a[i]+1);或者每输入一行进行getchar();&lt;剔除换行&gt;<br> 2、dp问题，注意每个格子的上一格，左一格都有两个方向需要分别保存。<br> 2、不积跬步无以至千里，加油。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/04/14/hihocoder-1290-Demo-Day/" data-id="cimzorkos0002poak92cqc3d1" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-ClearPoster" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2016/03/16/ClearPoster/" class="article-date">
@@ -185,7 +261,7 @@ dp[<span class="keyword">index</span>]=<span class="number">1</span>;
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/03/16/ClearPoster/" data-id="cilueffla0006vgakogsoodg8" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/03/16/ClearPoster/" data-id="cimzorkp40007poakkadjwqkw" class="article-share-link">Share</a>
       
       
     </footer>
@@ -246,7 +322,7 @@ for (<span class="built_in">int</span> i = <span class="number">2</span>; i &lt;
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2015/11/14/Array/" data-id="cilueffgt0000vgak23tgkcd7" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2015/11/14/Array/" data-id="cimzorkky0000poakcko0f05m" class="article-share-link">Share</a>
       
       
     </footer>
@@ -311,7 +387,7 @@ for (<span class="built_in">int</span> i = <span class="number">2</span>; i &lt;
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2015/10/09/Largest-Retangle-in-Histogram/" data-id="cilueffl80005vgakd9uw1jz3" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2015/10/09/Largest-Retangle-in-Histogram/" data-id="cimzorkp20006poak5pnu6q4s" class="article-share-link">Share</a>
       
       
     </footer>
@@ -354,7 +430,7 @@ for (<span class="built_in">int</span> i = <span class="number">2</span>; i &lt;
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2015/09/24/findmaxDiff/" data-id="cilueffkx0003vgakn3pxyq4i" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2015/09/24/findmaxDiff/" data-id="cimzorkoz0004poakmprs1hy5" class="article-share-link">Share</a>
       
       
     </footer>
@@ -391,7 +467,7 @@ for (<span class="built_in">int</span> i = <span class="number">2</span>; i &lt;
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2015/09/24/aa/" data-id="cilueffl60004vgakwo4kig1v" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2015/09/24/aa/" data-id="cimzorkp00005poakou7axhfm" class="article-share-link">Share</a>
       
       
     </footer>
@@ -510,7 +586,7 @@ for (<span class="built_in">int</span> i = <span class="number">2</span>; i &lt;
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2015/09/21/mm/" data-id="cilueffkr0001vgaknselbsgj" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2015/09/21/mm/" data-id="cimzorkof0001poakm38fcpj3" class="article-share-link">Share</a>
       
       
     </footer>
@@ -555,7 +631,7 @@ for (<span class="built_in">int</span> i = <span class="number">2</span>; i &lt;
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2015/09/21/hello-world/" data-id="cilueffku0002vgak9r3zhyoh" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2015/09/21/hello-world/" data-id="cimzorkox0003poakqwhimdtl" class="article-share-link">Share</a>
       
       
     </footer>
@@ -580,7 +656,7 @@ for (<span class="built_in">int</span> i = <span class="number">2</span>; i &lt;
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a><span class="archive-list-count">4</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a><span class="archive-list-count">4</span></li></ul>
     </div>
   </div>
 
@@ -590,6 +666,10 @@ for (<span class="built_in">int</span> i = <span class="number">2</span>; i &lt;
     <h3 class="widget-title">Recents</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2016/04/14/hihocoder-1290-Demo-Day/">hihocoder_1290_Demo_Day</a>
+          </li>
         
           <li>
             <a href="/2016/03/16/ClearPoster/">ClearPoster</a>
@@ -605,10 +685,6 @@ for (<span class="built_in">int</span> i = <span class="number">2</span>; i &lt;
         
           <li>
             <a href="/2015/09/24/findmaxDiff/">findmaxDiff</a>
-          </li>
-        
-          <li>
-            <a href="/2015/09/24/aa/">aa</a>
           </li>
         
       </ul>
