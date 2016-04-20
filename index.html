@@ -65,6 +65,77 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-LPS" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/04/20/LPS/" class="article-date">
+  <time datetime="2016-04-20T13:23:33.000Z" itemprop="datePublished">2016-04-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/04/20/LPS/">最长回文子序列LPS（Longest Palindromic Subsequence）问题</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>问题描述：一个字符串有许多子序列，比如字符串cabbeaf，它的子序列有c、abb、e、a、f，可以通过删除某些字符而变成回文字符串，<br>字符串“cabbeaf”，删掉‘c’、’e’、‘f’后剩下的子串“abba”就是回文字符串，也是其中最长的回文子序列。注意和最长回文子串点击打开链接的区别，<br>最长回文子串必须是连续的，这里的最长回文子序列，可以是不连续的，<br>这就是最长回文子序列LPS问题。</p>
+<p>方法1 递归问题；<br>str[0…n-1]是给定的字符串序列，长度为n，假设lps(0,n-1)表示序列str[0…n-1]的最长回文子序列的长度。<br>1.如果str的最后一个元素和第一个元素是相同的，则有：lps(0,n-1)=lps(1,n-2)+2；例如字符串序列“AABACACBA”，第一个元素和最后一个元素相同，其中lps(1,n-2)表示红色部分的最长回文子序列的长度；<br>2.如果str的最后一个元素和第一个元素是不相同的，则有：lps(0,n-1)=max(lps(1,n-1),lps(0,n-2))；例如字符串序列“ABACACB”，其中lps(1,n-1)表示去掉第一元素的子序列，lps(0,n-2)表示去掉最后一个元素的子序列。<br>code</p>
+<p>#include<iostream></iostream></p>
+<p>#include<string></string></p>
+<p>#include<algorithm><br>using namespace std;</algorithm></p>
+<p>//递归方法，求解最长回文子序列<br>int lps(char *str, int i, int j)<br>{<br>    if (i == j)<br>        return 1;    //只有一个元素，回文长度为1<br>    if (i &gt; j) return 0;   //因为只计算序列str[i….j]</p>
+<pre><code><span class="comment">//如果首尾相同</span>
+<span class="keyword">if</span> (<span class="built_in">str</span>[i] == <span class="built_in">str</span>[j])
+    <span class="keyword">return</span> lps(<span class="built_in">str</span>, i + <span class="number">1</span>, j - <span class="number">1</span>) + <span class="number">2</span>;
+<span class="comment">//如果首尾不同</span>
+<span class="keyword">return</span> <span class="built_in">max</span>(lps(<span class="built_in">str</span>, i, j - <span class="number">1</span>), lps(<span class="built_in">str</span>, i + <span class="number">1</span>, j));
+</code></pre><p>}</p>
+<p>int main()<br>{<br>    char str[] = “cabbeaf”;<br>    int n = strlen(str);<br>    int res = lps(str, 0, n - 1);<br>    cout &lt;&lt; res&lt;&lt; endl;<br>    getchar();<br>    return 0;<br>}</p>
+<p>方法2<br>重叠子问题<br>              L(0, 5)<br>             /        \<br>            /          \<br>        L(1,5)          L(0,4)<br>       /    \            /    \<br>      /      \          /      \<br>  L(2,5)    L(1,4)  L(1,4)  L(0,3)<br>  动态规划方法<br>codetest  </p>
+<p>#include<iostream></iostream></p>
+<p>#include<algorithm><br>using namespace std;</algorithm></p>
+<p>//动态规划求解最长回文子序列，时间复杂度为O(n^2)<br>int lpsDp(char *str, int n)<br>{<br>    int dp[10][10], tmp;<br>    memset(dp, 0, sizeof(dp));<br>    for (int i = 0; i &lt; n; ++i)     dp[i][i] = 1;</p>
+<pre><code><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; n; ++i)
+{
+    tmp = <span class="number">0</span>;
+    <span class="comment">//考虑所有连续的长度为i+1的子串，str[j....j+i]</span>
+    <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j + i &lt; n; j++)
+    {
+        <span class="comment">//如果首尾相同</span>
+        <span class="keyword">if</span> (str[j] == str[j + i])
+            tmp = dp[j + <span class="number">1</span>][j + i - <span class="number">1</span>] + <span class="number">2</span>;
+        <span class="comment">//如果首尾不同</span>
+        <span class="keyword">else</span> 
+            tmp = max(dp[j + <span class="number">1</span>][j + i], dp[j][j + i - <span class="number">1</span>]);
+        dp[j][j + i] = tmp;
+    }
+}
+<span class="keyword">return</span> dp[<span class="number">0</span>][n - <span class="number">1</span>]; <span class="comment">//返回字符串str[0...n-1]的最长回文子序列长度</span>
+</code></pre><p>}</p>
+<p>int main()<br>{<br>    char str[10] = “cabbeaf”;<br>    int res = lpsDp(str, strlen(str));<br>    cout &lt;&lt; res &lt;&lt; endl;<br>    getchar();<br>    return 0;<br>}</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/04/20/LPS/" data-id="cin8w5tcw00089caknqacyx3y" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-PalindromicSubsequenceNo" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2016/04/20/PalindromicSubsequenceNo/" class="article-date">
@@ -123,7 +194,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/04/20/PalindromicSubsequenceNo/" data-id="cin8oaznq0006a4akrfp91m30" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/04/20/PalindromicSubsequenceNo/" data-id="cin8w5tcr00069cak0jpzgirv" class="article-share-link">Share</a>
       
       
     </footer>
@@ -199,7 +270,7 @@ dp[<span class="number">1</span>][<span class="number">1</span>][<span class="nu
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/04/14/hihocoder-1290-Demo-Day/" data-id="cin8oaznf0002a4ak6nx4vfqy" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/04/14/hihocoder-1290-Demo-Day/" data-id="cin8w5tch00029cak5fyj703t" class="article-share-link">Share</a>
       
       
     </footer>
@@ -329,7 +400,7 @@ dp[<span class="keyword">index</span>]=<span class="number">1</span>;
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/03/16/ClearPoster/" data-id="cin8oaznw0008a4aksbyit2bw" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/03/16/ClearPoster/" data-id="cin8w5tcy00099cak10l48bwn" class="article-share-link">Share</a>
       
       
     </footer>
@@ -390,7 +461,7 @@ for (<span class="built_in">int</span> i = <span class="number">2</span>; i &lt;
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2015/11/14/Array/" data-id="cin8oazmv0000a4aknb0ek89c" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2015/11/14/Array/" data-id="cin8w5taz00009cakaygdmi2q" class="article-share-link">Share</a>
       
       
     </footer>
@@ -455,7 +526,7 @@ for (<span class="built_in">int</span> i = <span class="number">2</span>; i &lt;
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2015/10/09/Largest-Retangle-in-Histogram/" data-id="cin8oaznt0007a4ak83yojryk" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2015/10/09/Largest-Retangle-in-Histogram/" data-id="cin8w5tcu00079cake41pusnq" class="article-share-link">Share</a>
       
       
     </footer>
@@ -498,7 +569,7 @@ for (<span class="built_in">int</span> i = <span class="number">2</span>; i &lt;
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2015/09/24/findmaxDiff/" data-id="cin8oaznl0004a4akv5bnvuhb" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2015/09/24/findmaxDiff/" data-id="cin8w5tcn00049cakctb4sdpz" class="article-share-link">Share</a>
       
       
     </footer>
@@ -535,7 +606,7 @@ for (<span class="built_in">int</span> i = <span class="number">2</span>; i &lt;
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2015/09/24/aa/" data-id="cin8oazno0005a4ak33pxdg1a" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2015/09/24/aa/" data-id="cin8w5tcp00059cak8mc5m0ub" class="article-share-link">Share</a>
       
       
     </footer>
@@ -654,7 +725,7 @@ for (<span class="built_in">int</span> i = <span class="number">2</span>; i &lt;
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2015/09/21/mm/" data-id="cin8oaznc0001a4akljx7lrn0" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2015/09/21/mm/" data-id="cin8w5tc500019caknq6c97np" class="article-share-link">Share</a>
       
       
     </footer>
@@ -699,7 +770,7 @@ for (<span class="built_in">int</span> i = <span class="number">2</span>; i &lt;
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2015/09/21/hello-world/" data-id="cin8oazni0003a4akxr9fxwi5" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2015/09/21/hello-world/" data-id="cin8w5tcl00039cak7x24kpa4" class="article-share-link">Share</a>
       
       
     </footer>
@@ -724,7 +795,7 @@ for (<span class="built_in">int</span> i = <span class="number">2</span>; i &lt;
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a><span class="archive-list-count">4</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a><span class="archive-list-count">4</span></li></ul>
     </div>
   </div>
 
@@ -734,6 +805,10 @@ for (<span class="built_in">int</span> i = <span class="number">2</span>; i &lt;
     <h3 class="widget-title">Recents</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2016/04/20/LPS/">最长回文子序列LPS（Longest Palindromic Subsequence）问题</a>
+          </li>
         
           <li>
             <a href="/2016/04/20/PalindromicSubsequenceNo/">Palindromic Subsequence Numbers</a>
@@ -749,10 +824,6 @@ for (<span class="built_in">int</span> i = <span class="number">2</span>; i &lt;
         
           <li>
             <a href="/2015/11/14/Array/">Remove Duplicates from Sorted Array II</a>
-          </li>
-        
-          <li>
-            <a href="/2015/10/09/Largest-Retangle-in-Histogram/">Largest_Retangle_in-Histogram</a>
           </li>
         
       </ul>
