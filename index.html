@@ -65,6 +65,74 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-PalindromicSubsequenceNo" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/04/20/PalindromicSubsequenceNo/" class="article-date">
+  <time datetime="2016-04-20T09:43:23.000Z" itemprop="datePublished">2016-04-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/04/20/PalindromicSubsequenceNo/">Palindromic Subsequence Numbers</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>题目2 : 回文字符序列<br><a href="https://s3.amazonaws.com/lantern-android/lantern-android-beta.apk" target="_blank" rel="external">https://s3.amazonaws.com/lantern-android/lantern-android-beta.apk</a><br>描述<br>给定字符串，求它的回文子序列个数。回文子序列反转字符顺序后仍然与原序列相同。例如字符串aba中，回文子序列为”a”, “a”, “aa”, “b”, “aba”，共5个。<br>内容相同位置不同的子序列算不同的子序列。</p>
+<p>输入<br>第一行一个整数T，表示数据组数。之后是T组数据，每组数据为一行字符串。</p>
+<p>输出<br>对于每组数据输出一行，格式为”Case #X: Y”，X代表数据编号（从1开始），Y为答案。答案对100007取模。</p>
+<p>数据范围<br>1 ≤ T ≤ 30</p>
+<p>小数据</p>
+<p>字符串长度 ≤ 25</p>
+<p>大数据</p>
+<p>字符串长度 ≤ 1000</p>
+<p>样例输入<br>5<br>aba<br>abcbaddabcba<br>12111112351121<br>ccccccc<br>fdadfa<br>样例输出<br>Case #1: 5<br>Case #2: 277<br>Case #3: 1333<br>Case #4: 127<br>Case #5: 17<br>EmacsNormalVim</p>
+<p>分析：<br>动态规划：dp[i][j]表示 str(i–&gt;j)的回文子序列个数<br>状态方程： 求i到j这个区间共有多少回文子序列 ，两种情况<br>1、str[i]==str[j] dp[i][j] = 2<em>dp[i+1][j-1] +dp[i+1][j]+dp[i][j-1] - 2</em>dp[i+1][j-1]+1 =dp[i+1][j]+dp[i][j-1]+1 ;<br>解释： a….a,str[i]==str[j],则str[i+1…j-1]构成的回文子串同外部str[i],str[j]构成回文序列，同时str[i+1….j-1],也是回文子串，故2*dp[i+1][j-1];<br>同时计算 str[i…j-1]  str[i+1…j]回文子序列个数，会有两次重复计算str[i+1…j-1]过程，所以减去， str[i]和str[j]构成回文故+1；<br>2、str[i]!=str[j] dp[i][j] = dp[i+1][j]+dp[i][j-1]-dp[i+1][j-1]  分析同上,最后 - dp[i+1][j-1]是因为重复一次 ；<br>注意：<br>1、填充方式dp[j][j+i] 代表从位置j开始以i为长度的字符串的回文字符个数。<br>2、表中对角线下边是无用的，填充0.<br>3、表填充方式时会用到d[i+1][j-1], d[i][j-1], d[i+1][j]。 这也正是为什么区间型DP一般都是从相距较小的区间开始，然后不扩大区间，是斜向下填充的</p>
+<p>code:<br>int T;<br>char ss[1010];<br>int dp[1010][1010];<br>long long ans;<br>int len;<br>const int mod=100007;<br>void dyp()<br>{<br>    // Build the table. Note that the lower diagonal values of table are<br>    // useless and not filled in the process. The values are filled in a<br>    // manner similar to Matrix Chain Multiplication DP solution (See<br>    // <a href="http://www.geeksforgeeks.org/archives/15553" target="_blank" rel="external">http://www.geeksforgeeks.org/archives/15553</a>). cl is length of<br>    // substring<br>    for(int i=1;i&lt;len;++i)<br>    {<br>        for(int j=0;i+j&lt;len;++j)</p>
+<pre><code>        <span class="atom">if</span>(<span class="atom">ss</span>[<span class="atom">j</span>]==<span class="atom">ss</span>[<span class="atom">j</span>+<span class="atom">i</span>])
+            <span class="atom">dp</span>[<span class="atom">j</span>][<span class="atom">j</span>+<span class="atom">i</span>] = (<span class="atom">dp</span>[<span class="atom">j</span>+<span class="number">1</span>][<span class="atom">j</span>+<span class="atom">i</span>]+<span class="atom">dp</span>[<span class="atom">j</span>][<span class="atom">j</span>+<span class="atom">i</span>-<span class="number">1</span>]+<span class="number">1</span>)<span class="comment">%mod;</span>
+        <span class="atom">else</span> 
+        {
+            <span class="atom">dp</span>[<span class="atom">j</span>][<span class="atom">j</span>+<span class="atom">i</span>]= (<span class="atom">dp</span>[<span class="atom">j</span>+<span class="number">1</span>][<span class="atom">j</span>+<span class="atom">i</span>]+<span class="atom">dp</span>[<span class="atom">j</span>][<span class="atom">j</span>+<span class="atom">i</span>-<span class="number">1</span>]-<span class="atom">dp</span>[<span class="atom">j</span>+<span class="number">1</span>][<span class="atom">j</span>+<span class="atom">i</span>-<span class="number">1</span>])<span class="comment">%mod;</span>
+        }
+}
+
+<span class="atom">ans</span> = <span class="atom">dp</span>[<span class="number">0</span>][<span class="atom">len</span>-<span class="number">1</span>];
+</code></pre><p>}</p>
+<p>int main()<br>{<br>    scanf(“%d”,&amp;T);<br>    int index = 1;<br>    while(T–)<br>    {<br>        ans =0;<br>        memset(ss,0,sizeof(ss));<br>        memset(dp,0,sizeof(dp));</p>
+<pre><code>    cin&gt;&gt;ss;
+    <span class="built_in">len</span> = <span class="built_in">strlen</span>(ss);
+    <span class="keyword">for</span>(<span class="keyword">int</span> <span class="keyword">i</span>=<span class="number">0</span>;<span class="keyword">i</span>&lt;<span class="built_in">len</span>;++<span class="keyword">i</span>)<span class="keyword">for</span>(<span class="keyword">int</span> <span class="keyword">j</span>=<span class="keyword">i</span>;<span class="keyword">j</span>&lt;<span class="built_in">len</span>;++<span class="keyword">j</span>)<span class="keyword">dp</span>[<span class="keyword">i</span>][<span class="keyword">j</span>]=<span class="number">1</span>;
+    dyp();
+
+    <span class="built_in">printf</span>(<span class="string">"Case #%d: %d\n"</span>,<span class="built_in">index</span>++,ans%<span class="keyword">mod</span>);
+
+}
+<span class="built_in">getchar</span>();
+</code></pre><p>}</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/04/20/PalindromicSubsequenceNo/" data-id="cin8oaznq0006a4akrfp91m30" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-hihocoder-1290-Demo-Day" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2016/04/14/hihocoder-1290-Demo-Day/" class="article-date">
@@ -131,7 +199,7 @@ dp[<span class="number">1</span>][<span class="number">1</span>][<span class="nu
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/04/14/hihocoder-1290-Demo-Day/" data-id="cimzorkos0002poak92cqc3d1" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/04/14/hihocoder-1290-Demo-Day/" data-id="cin8oaznf0002a4ak6nx4vfqy" class="article-share-link">Share</a>
       
       
     </footer>
@@ -261,7 +329,7 @@ dp[<span class="keyword">index</span>]=<span class="number">1</span>;
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/03/16/ClearPoster/" data-id="cimzorkp40007poakkadjwqkw" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/03/16/ClearPoster/" data-id="cin8oaznw0008a4aksbyit2bw" class="article-share-link">Share</a>
       
       
     </footer>
@@ -322,7 +390,7 @@ for (<span class="built_in">int</span> i = <span class="number">2</span>; i &lt;
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2015/11/14/Array/" data-id="cimzorkky0000poakcko0f05m" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2015/11/14/Array/" data-id="cin8oazmv0000a4aknb0ek89c" class="article-share-link">Share</a>
       
       
     </footer>
@@ -387,7 +455,7 @@ for (<span class="built_in">int</span> i = <span class="number">2</span>; i &lt;
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2015/10/09/Largest-Retangle-in-Histogram/" data-id="cimzorkp20006poak5pnu6q4s" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2015/10/09/Largest-Retangle-in-Histogram/" data-id="cin8oaznt0007a4ak83yojryk" class="article-share-link">Share</a>
       
       
     </footer>
@@ -430,7 +498,7 @@ for (<span class="built_in">int</span> i = <span class="number">2</span>; i &lt;
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2015/09/24/findmaxDiff/" data-id="cimzorkoz0004poakmprs1hy5" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2015/09/24/findmaxDiff/" data-id="cin8oaznl0004a4akv5bnvuhb" class="article-share-link">Share</a>
       
       
     </footer>
@@ -467,7 +535,7 @@ for (<span class="built_in">int</span> i = <span class="number">2</span>; i &lt;
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2015/09/24/aa/" data-id="cimzorkp00005poakou7axhfm" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2015/09/24/aa/" data-id="cin8oazno0005a4ak33pxdg1a" class="article-share-link">Share</a>
       
       
     </footer>
@@ -586,7 +654,7 @@ for (<span class="built_in">int</span> i = <span class="number">2</span>; i &lt;
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2015/09/21/mm/" data-id="cimzorkof0001poakm38fcpj3" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2015/09/21/mm/" data-id="cin8oaznc0001a4akljx7lrn0" class="article-share-link">Share</a>
       
       
     </footer>
@@ -631,7 +699,7 @@ for (<span class="built_in">int</span> i = <span class="number">2</span>; i &lt;
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2015/09/21/hello-world/" data-id="cimzorkox0003poakqwhimdtl" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2015/09/21/hello-world/" data-id="cin8oazni0003a4akxr9fxwi5" class="article-share-link">Share</a>
       
       
     </footer>
@@ -656,7 +724,7 @@ for (<span class="built_in">int</span> i = <span class="number">2</span>; i &lt;
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a><span class="archive-list-count">4</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a><span class="archive-list-count">4</span></li></ul>
     </div>
   </div>
 
@@ -666,6 +734,10 @@ for (<span class="built_in">int</span> i = <span class="number">2</span>; i &lt;
     <h3 class="widget-title">Recents</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2016/04/20/PalindromicSubsequenceNo/">Palindromic Subsequence Numbers</a>
+          </li>
         
           <li>
             <a href="/2016/04/14/hihocoder-1290-Demo-Day/">hihocoder_1290_Demo_Day</a>
@@ -681,10 +753,6 @@ for (<span class="built_in">int</span> i = <span class="number">2</span>; i &lt;
         
           <li>
             <a href="/2015/10/09/Largest-Retangle-in-Histogram/">Largest_Retangle_in-Histogram</a>
-          </li>
-        
-          <li>
-            <a href="/2015/09/24/findmaxDiff/">findmaxDiff</a>
           </li>
         
       </ul>
