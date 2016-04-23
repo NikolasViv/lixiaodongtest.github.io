@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>kmp | Down with wind !</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="#1015 : KMP算法输入第一行一个整数N，表示测试数据组数。
+接下来的N*2行，每两行表示一个测试数据。在每一个测试数据中，第一行为模式串，由不超过10^4个大写字母组成，第二行为原串，由不超过10^6个大写字母组成。
+其中N&amp;lt;=20
+输出对于每一个测试数据，按照它们在输入中出现的顺序输出一行Ans，表示模式串在原串中出现的次数。
+样例输入5HAHAHAHAWQNWQNADAADADA">
+<meta property="og:type" content="article">
+<meta property="og:title" content="kmp">
+<meta property="og:url" content="http://yoursite.com/2016/04/23/kmp/index.html">
+<meta property="og:site_name" content="Down with wind !">
+<meta property="og:description" content="#1015 : KMP算法输入第一行一个整数N，表示测试数据组数。
+接下来的N*2行，每两行表示一个测试数据。在每一个测试数据中，第一行为模式串，由不超过10^4个大写字母组成，第二行为原串，由不超过10^6个大写字母组成。
+其中N&amp;lt;=20
+输出对于每一个测试数据，按照它们在输入中出现的顺序输出一行Ans，表示模式串在原串中出现的次数。
+样例输入5HAHAHAHAWQNWQNADAADADA">
+<meta property="og:updated_time" content="2016-04-23T07:09:10.941Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="kmp">
+<meta name="twitter:description" content="#1015 : KMP算法输入第一行一个整数N，表示测试数据组数。
+接下来的N*2行，每两行表示一个测试数据。在每一个测试数据中，第一行为模式串，由不超过10^4个大写字母组成，第二行为原串，由不超过10^6个大写字母组成。
+其中N&amp;lt;=20
+输出对于每一个测试数据，按照它们在输入中出现的顺序输出一行Ans，表示模式串在原串中出现的次数。
+样例输入5HAHAHAHAWQNWQNADAADADA">
+  
+    <link rel="alternative" href="/atom.xml" title="Down with wind !" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  
+
+</head>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Down with wind !</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">--remember my own life</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-kmp" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/04/23/kmp/" class="article-date">
+  <time datetime="2016-04-23T07:08:23.000Z" itemprop="datePublished">2016-04-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      kmp
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>#1015 : KMP算法<br>输入<br>第一行一个整数N，表示测试数据组数。</p>
+<p>接下来的N*2行，每两行表示一个测试数据。在每一个测试数据中，第一行为模式串，由不超过10^4个大写字母组成，第二行为原串，由不超过10^6个大写字母组成。</p>
+<p>其中N&lt;=20</p>
+<p>输出<br>对于每一个测试数据，按照它们在输入中出现的顺序输出一行Ans，表示模式串在原串中出现的次数。</p>
+<p>样例输入<br>5<br>HA<br>HAHAHA<br>WQN<br>WQN<br>ADA<br>ADADADA<br>BABABB<br>BABABABABABABABABB<br>DAD<br>ADDAADAADDAAADAAD<br>样例输出<br>3<br>1<br>3<br>1<br>0</p>
+<p>分析过程：<br>KMP算法<br>模式串p, 主串s，求p在s中出现的位置；</p>
+<p>求解过程<br>失配时，模式串向右移动的位数为：失配字符所在位置 - 失配字符对应的next 值<br>1、求p串 next数组，<br>    s[i]!=p[j]时，j=next[j];<br>    next[j]表示p[0…j-1]前缀和后缀相同的公共长度</p>
+<p>假设现在文本串S匹配到 i 位置，模式串P匹配到 j 位置<br>2<br>2.1<br>    如果j = -1，或者当前字符匹配成功（即S[i] == P[j]），都令i++，j++，继续匹配下一个字符；<br>2.2<br>    如果j != -1，且当前字符匹配失败（即S[i] != P[j]），则令 i 不变，j = next[j]。此举意味着失配时，<br>    模式串P相对于文本串S向右移动了j - next [j] 位。”</p>
+<p>求解 next 数组，是</p>
+<p>算法复杂度：<br>模式串首字符的位置保持不动，仅仅是i++、j++；如果匹配失配，i 不变（即 i 不回溯），模式串会跳过匹配过的next [j]个字符。整个算法最坏的情况是，<br>当模式串首字符位于i - j的位置时才匹配成功，算法结束。<br>所以，如果文本串的长度为n，模式串的长度为m，那么匹配过程的时间复杂度为O(n)，算上计算next的O(m)时间，KMP的整体时间复杂度为O(m + n)。</p>
+<p>暴力匹配过程 算法复杂度O(slen<em>plen)<br>int ViolentMatch(char</em> s, char* p,int index)<br>{<br>    int slen = strlen(s);<br>    int plen = strlen(p);<br>    int i=index,j=0;<br>    while(i&lt;slen &amp;&amp;ｊ&lt;plen)<br>    {<br>         //①如果当前字符匹配成功（即S[i] == P[j]），则i++，j++<br>        if(s[i]==s[j])++i,++j;<br>        else<br>        {<br>          //②如果失配（即S[i]! = P[j]），令i = i - (j - 1)，j = 0<br>            i = i-(j-1);<br>            j=0;<br>        }<br>    }<br>    return i==slen?-1:j-i;<br>}</p>
+<p>KMP算法code<br>1、求next数组<br>递归求next数组<br>下面的问题是：已知next [0, …, j]，如何求出next [j + 1]呢？<br>对于P的前j+1个序列字符：<br>若p[k] == p[j]，则next[j + 1 ] = next [j] + 1 = k + 1；<br>若p[k ] ≠ p[j]，如果此时p[ next[k] ] == p[j ]，则next[ j + 1 ] =  next[k] + 1，否则继续递归前缀索引k = next[k]，而后重复此过程。<br>相当于在字符p[j+1]之前不存在长度为k+1的前缀”p0 p1, …, pk-1 pk”跟后缀“pj-k pj-k+1, …, pj-1 pj”相等，那么是否可能存在另一个值t+1 &lt; k+1，<br>使得长度更小的前缀 “p0 p1, …, pt-1 pt” 等于长度更小的后缀 “pj-t pj-t+1, …, pj-1 pj” 呢？如果存在，那么这个t+1 便是next[ j+1]的值，<br>此相当于利用已经求得的next 数组（next [0, …, k, …, j]）进行P串前缀跟P串后缀的匹配。</p>
+<p>void GetNext(char* p,int next[])<br>{<br>    int plen = strlen(p);<br>    int j=0;<br>    int k=-1;<br>    next[0] = -1;<br>    while(j&lt;plen)<br>    {<br>        if(k==-1||p[j]==p[k])<br>        {<br>            k++;<br>            j++;<br>            next[j]=k;<br>        }<br>        else<br>         {<br>            //递归前缀索引k = next[k]，找到长度更短的相同前缀后缀<br>            //<a href="http://blog.csdn.net/v_july_v/article/details/7041827" target="_blank" rel="external">http://blog.csdn.net/v_july_v/article/details/7041827</a><br>            k=next[j];<br>         }</p>
+<pre><code>}
+</code></pre><p>}  </p>
+<p>2、求模式字符串位置<br>int KmpSearch(char<em> s, char</em> p,int index)<br>{<br>    int i=index;<br>    int j = 0;<br>    int slen= strlen(s);<br>    int plen = strlen(p);</p>
+<pre><code><span class="keyword">if</span>(i&gt;slen)<span class="keyword">return</span> -<span class="number">1</span>;
+<span class="keyword">while</span>(i&lt;slen &amp;&amp; j&lt;plen)
+{
+      <span class="comment">//①如果j = -1，或者当前字符匹配成功（即S[i] == P[j]），都令i++，j++      </span>
+    <span class="keyword">if</span>(s[i]==p[j])++i,++j;
+    <span class="keyword">else</span> 
+     <span class="comment">//②如果j != -1，且当前字符匹配失败（即S[i] != P[j]），则令 i 不变，j = next[j] </span>
+        j = next[j];
+}
+
+<span class="keyword">return</span> i==slen?-<span class="number">1</span>:j-i;
+<span class="comment">//return j==plen?i-j:-1;</span>
+</code></pre><p>}</p>
+<p>3.Next 数组的优化<br>    s:abacababc<br>    p:abab<br>next:-1001<br>右移2位后，b又跟c失配。事实上，因为在上一步的匹配中，已经得知p[3] = b，与s[3] = c失配，而右移两位之后，<br>让p[ next[3] ] = p[1] = b 再跟s[3]匹配时，必然失配。问题出在哪呢？</p>
+<p>问题出在不该出现p[j] = p[ next[j] ],不能允许p[j] = p[ next[j ]],需要再次递归，即令next[j] = next[ next[j] ]。</p>
+<p>//优化过后的next 数组求法<br>void GetNextval(char* p, int next[])<br>{<br>    int pLen = strlen(p);<br>    next[0] = -1;<br>    int k = -1;<br>    int j = 0;<br>    while (j &lt; pLen - 1)<br>    {<br>        //p[k]表示前缀，p[j]表示后缀<br>        if (k == -1 || p[j] == p[k])<br>        {<br>            ++j;<br>            ++k;<br>            //较之前next数组求法，改动在下面4行<br>            if (p[j] != p[k])<br>                next[j] = k;   //之前只有这一行<br>            else<br>                //因为不能出现p[j] = p[ next[j ]]，所以当出现时需要继续递归，k = next[k] = next[next[k]]<br>                next[j] = next[k];<br>        }<br>        else<br>        {<br>            k = next[k];<br>        }<br>    }<br>}  </p>
+<p>code：</p>
+<p>#include<iostream></iostream></p>
+<p>#include<cstring></cstring></p>
+<p>#include<vector></vector></p>
+<p>using namespace std;<br>int n;<br>char s[1000000+10];<br>char p[1000000+10];<br>int nxt[1000000+10];</p>
+<p>void Getnextval()<br>{<br>    int plen = strlen(p);<br>    int k=-1;<br>    nxt[0]=-1;<br>    int i=0;<br>    while (i&lt;plen) //July 算法是i&lt;plen-1，因为只需要一次匹配，我们这里需要多次，需要计算p[plen];<br>    {<br>        if(k==-1||p[i]==p[k])<br>        {<br>            k++;<br>            i++;<br>            if(p[i]!=p[k])<br>                nxt[i]=k;<br>            else<br>                nxt[i]=nxt[k]; //k = next[k] = next[next[k]]<br>        }<br>        else<br>            k = nxt[k]; //在之前的串0…k中找p[i]==p[k’]<br>    }<br>}<br>int deal(int beg, int end)<br>{<br>    int slen = strlen(s);<br>    int plen = strlen(p);<br>    int i = beg;<br>    int j = 0;<br>    int ans=0;<br>    while(i&lt;slen)<br>    {<br>         if(j==-1||s[i]==p[j])++i,++j;<br>        else<br>        {<br>           j=nxt[j];<br>        }<br>        if(j==plen)<br>        {<br>            ans++;<br>        }<br>    }</p>
+<pre><code><span class="keyword">return</span> <span class="built_in">ans</span>;
+</code></pre><p>}</p>
+<p>int main()<br>{<br>    scanf(“%d”,&amp;n);<br>    while(n–)<br>    {<br>        memset(s,0,sizeof(s));<br>        memset(p,0,sizeof(p));<br>        memset(nxt,0,sizeof(nxt));</p>
+<pre><code>    <span class="built_in">scanf</span>(<span class="string">"%s"</span>,p);
+    <span class="built_in">scanf</span>(<span class="string">"%s"</span>,s);
+    Getnextval();
+    <span class="keyword">int</span> ans=deal(<span class="number">0</span>,<span class="built_in">strlen</span>(s));
+    <span class="built_in">cout</span>&lt;&lt;ans&lt;&lt;endl;
+}
+getchar();
+</code></pre><p>}</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/04/23/kmp/" data-id="cinct2bp90004boakydgaimjj" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/strings/">strings</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2016/04/20/2-29/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">msra资格赛第一题：2月29日</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/math/">math</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/strings/">strings</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/math/" style="font-size: 10px;">math</a> <a href="/tags/strings/" style="font-size: 10px;">strings</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a><span class="archive-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/04/23/kmp/">kmp</a>
+          </li>
+        
+          <li>
+            <a href="/2016/04/20/2-29/">msra资格赛第一题：2月29日</a>
+          </li>
+        
+          <li>
+            <a href="/2016/04/20/LPS/">最长回文子序列LPS（Longest Palindromic Subsequence）问题</a>
+          </li>
+        
+          <li>
+            <a href="/2016/04/20/PalindromicSubsequenceNo/">Palindromic Subsequence Numbers</a>
+          </li>
+        
+          <li>
+            <a href="/2016/04/14/hihocoder-1290-Demo-Day/">hihocoder_1290_Demo_Day</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 lixiaodong<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+
+  </div>
+</body>
+</html>
